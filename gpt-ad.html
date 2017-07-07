@@ -30,6 +30,7 @@
         }
 
         _adSlotIdChanged(newValue, oldValue) {
+
             Polymer.RenderStatus.afterNextRender(this, function() {
 
                 var ad_slot = this.$.ad_slot_placeholder;
