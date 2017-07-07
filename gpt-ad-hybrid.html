@@ -7,11 +7,6 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<!-- Load the Polymer.Element base class -->
-<!--
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="/bower_components/polymer/lib/utils/render-status.html">
--->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <dom-module id="gpt-ad">
     <template>
@@ -33,21 +28,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             adSlotId: {
                 type: String,
                 observer: '_adSlotIdChanged'
+            },
+            forceRefresh: {
+                type: Boolean
             }
         },
         _adSlotIdChanged: function(newValue, oldValue) {
 
-            //this.async(function() {
             Polymer.afterNextRender(this, function() {
                 var ad_slot = Polymer.dom(this.root).querySelector(".ad_slot_placeholder");
                 ad_slot.id = newValue;
 
+                var context = this;
+
                 googletag.cmd.push(function() {
                     googletag.display(ad_slot);
+                    if(context.forceRefresh != undefined) {
+                        googletag.pubads().refresh();
+                    }
                 });
             });
         },
-
     });
     </script>
 </dom-module>
